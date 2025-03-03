@@ -1,147 +1,193 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Ilości Ziemi</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f6f6f6;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Ilości Ziemi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f6f6f6;
+    }
 
-        h2 {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
+    h2 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
 
-        form {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin: 0 auto;
-            max-width: 1280px;
-        }
+    form {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 1280px;
+    }
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #333;
-        }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-        }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+    }
 
-        input:focus, select:focus {
-            border-color: #007bff;
-            outline: none;
-        }
+    input:focus, select:focus {
+      border-color: #007bff;
+      outline: none;
+    }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0f4e55;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            font-size: 20px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            box-sizing: border-box;
-        }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0f4e55;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-sizing: border-box;
+    }
 
-        button:hover {
-            background-color: #093a40;
-        }
+    button:hover {
+      background-color: #093a40;
+    }
 
-        .results {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: left;
-        }
-    </style>
+    .results {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    /* Styl dla kontenera guzika */
+    .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    /* Styl guzika taki sam jak poprzednio */
+    .wycena-button-fiolet {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      max-width: 500px;
+      min-width: 250px;
+      font-size: clamp(16px, 1.8vw, 24px);
+      background: #8e42ff;
+      color: white !important;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 15px;
+      padding: 20px 25px;
+      line-height: 1.4;
+      transition: all 300ms ease-in-out;
+      box-shadow: 0 4px 10px rgba(142, 66, 255, 0.4);
+      white-space: normal;
+      word-wrap: break-word;
+    }
+
+    .wycena-button-fiolet:hover {
+      transform: scale(1.07);
+      background: #7a36db;
+      transition: all 200ms ease-in-out;
+    }
+  </style>
 </head>
 <body>
-    <h2>Kalkulator Ilości Ziemi</h2>
-    <form id="soilCalculatorForm">
-        <label for="landArea">Powierzchnia działki (m²):</label>
-        <input type="number" id="landArea" placeholder="Wpisz powierzchnię działki" required>
+  <h2>Kalkulator Ilości Ziemi</h2>
+  <form id="soilCalculatorForm">
+    <label for="landArea">Powierzchnia działki (m²):</label>
+    <input type="number" id="landArea" placeholder="Wpisz powierzchnię działki" required>
 
-        <label for="soilDepth">Grubość warstwy ziemi (cm):</label>
-        <input type="number" id="soilDepth" placeholder="Wpisz grubość warstwy ziemi" required>
+    <label for="soilDepth">Grubość warstwy ziemi (cm):</label>
+    <input type="number" id="soilDepth" placeholder="Wpisz grubość warstwy ziemi" required>
 
-        <label for="soilType">Rodzaj ziemi:</label>
-        <select id="soilType" onchange="toggleCustomPriceField()">
-            <option value="70">Nieprzesiana (70 zł/tona)</option>
-            <option value="90">Przesiana (90 zł/tona)</option>
-            <option value="custom">Własna cena</option>
-        </select>
+    <label for="soilType">Rodzaj ziemi:</label>
+    <select id="soilType" onchange="toggleCustomPriceField()">
+      <option value="70">Nieprzesiana (70 zł/tona)</option>
+      <option value="90">Przesiana (90 zł/tona)</option>
+      <option value="custom">Własna cena</option>
+    </select>
 
-        <div id="customPriceField" style="display: none;">
-            <label for="customPrice">Własna cena za tonę (zł):</label>
-            <input type="number" id="customPrice" placeholder="Wpisz własną cenę za tonę">
-        </div>
+    <div id="customPriceField" style="display: none;">
+      <label for="customPrice">Własna cena za tonę (zł):</label>
+      <input type="number" id="customPrice" placeholder="Wpisz własną cenę za tonę">
+    </div>
 
-        <button type="button" onclick="calculateSoil()">Oblicz</button>
-    </form>
+    <button type="button" onclick="calculateSoil()">Oblicz</button>
+  </form>
 
-<div id="soilResult" class="results" style="display: none;">
+  <div id="soilResult" class="results" style="display: none;">
     <p>Objętość ziemi: <strong><span id="soilVolume"></span> m³</strong></p>
     <p>Waga ziemi: <strong><span id="soilWeight"></span> t</strong></p>
-    <p>Waga ziemi z uwzględnieniem 15% spulchnienia: <strong><span id="adjustedSoilWeight"></span> t</strong></p>
     <h4 id="soilCostText"><strong>Koszt ziemi:</strong></h4>
-    <p><a href="https://wytwornia-zieleni.pl/ile-kosztuje-projekt-ogrodu" target="_blank" rel="nofollow ugc" style="color: #007bff; text-decoration: none; font-weight: bold;">Sprawdź cenę projektu w Wytwórni Zieleni</a></p>
-</div>
+  </div>
 
-    <script>
-        function toggleCustomPriceField() {
-            const soilType = document.getElementById('soilType').value;
-            document.getElementById('customPriceField').style.display = soilType === "custom" ? "block" : "none";
-        }
+  <script>
+    function toggleCustomPriceField() {
+      const soilType = document.getElementById('soilType').value;
+      document.getElementById('customPriceField').style.display = soilType === "custom" ? "block" : "none";
+    }
 
-        function calculateSoil() {
-            const landArea = parseFloat(document.getElementById('landArea').value);
-            const soilDepth = parseFloat(document.getElementById('soilDepth').value) / 100; // cm to meters
-            const soilType = document.getElementById('soilType').value;
-            let soilPrice = soilType === "custom" ? parseFloat(document.getElementById('customPrice').value) : parseFloat(soilType);
+    function calculateSoil() {
+      const landArea = parseFloat(document.getElementById('landArea').value);
+      const soilDepth = parseFloat(document.getElementById('soilDepth').value) / 100; // konwersja cm na m
+      const soilType = document.getElementById('soilType').value;
+      let soilPrice = soilType === "custom" ? parseFloat(document.getElementById('customPrice').value) : parseFloat(soilType);
 
-            if (isNaN(landArea) || isNaN(soilDepth) || isNaN(soilPrice)) {
-                alert("Proszę wypełnić wszystkie pola.");
-                return;
-            }
+      if (isNaN(landArea) || isNaN(soilDepth) || isNaN(soilPrice)) {
+        alert("Proszę wypełnić wszystkie pola.");
+        return;
+      }
 
-            const soilVolume = landArea * soilDepth;
-            const soilWeight = soilVolume * 1.7; // 1 m³ = 1.7 tony
-            const adjustedSoilWeight = soilWeight * 1.15; // 15% spulchnienia
-            const soilCost = adjustedSoilWeight * soilPrice;
+      const soilVolume = landArea * soilDepth;
+      const soilWeight = soilVolume * 1.7; // 1 m³ = 1.7 tony
+      const soilCost = soilWeight * soilPrice;
 
-            document.getElementById('soilVolume').textContent = soilVolume.toFixed(2);
-            document.getElementById('soilWeight').textContent = soilWeight.toFixed(2);
-            document.getElementById('adjustedSoilWeight').textContent = adjustedSoilWeight.toFixed(2);
+      document.getElementById('soilVolume').textContent = soilVolume.toFixed(2);
+      document.getElementById('soilWeight').textContent = soilWeight.toFixed(2);
 
-            // Generowanie poprawnego tekstu wyniku
-            document.getElementById('soilCostText').innerHTML = `
-                <strong>Koszt ziemi:</strong> ${adjustedSoilWeight.toFixed(2)} t × ${soilPrice.toFixed(2)} zł/tona = ${soilCost.toFixed(2)} zł
-            `;
+      // Modyfikujemy tekst, aby zawierał informację o kosztach transportu
+      document.getElementById('soilCostText').innerHTML = `
+        <strong>Koszt ziemi:</strong> ${soilWeight.toFixed(2)} t × ${soilPrice.toFixed(2)} zł/tona = ${soilCost.toFixed(2)} zł (kwota obejmuje koszt ziemi z transportem)
+      `;
 
-            document.getElementById('soilResult').style.display = 'block';
-        }
-    </script>
+      document.getElementById('soilResult').style.display = 'block';
+
+      // Dodanie guzika z eBookiem z linkiem do https://bit.ly/gotowe-rabaty (otwierającym się w nowej zakładce)
+      // oraz paragraf z informacją o rabacie.
+      document.getElementById('soilResult').innerHTML += `
+        <div class="button-container">
+          <a href="https://bit.ly/gotowe-rabaty" target="_blank" class="wycena-button-fiolet">
+            Gotowe projekty rabat ogrodowych<br>Pobierz eBook 50% taniej<br><strong>Kod promocyjny "BLOG-WZ"! 🎉</strong>
+          </a>
+        </div>
+        <p>Z kodem "BLOG-WZ" otrzymasz 50% rabatu – zamiast 300 zł, zapłacisz tylko 150 zł! Skorzystaj z okazji i samemu zaprojektuj swój ogród w najlepszej cenie! 🌿✨</p>
+      `;
+    }
+  </script>
 </body>
 </html>
