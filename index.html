@@ -1,38 +1,59 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kalkulator Ilości Ziemi</title>
   <style>
+    /* Wyzerowanie marginesów i paddingów, ustawienie box-sizing */
+    html, body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      /* Ukrycie ewentualnego paska przewijania w poziomie */
+      overflow-x: hidden;
+    }
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
+    /* Główne ustawienia body */
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #FFFFFF ;
+      background-color: #FFFFFF;
     }
+
+    /* Kontener na kalkulator i wyniki */
+    .container {
+      max-width: 800px;     /* maksymalna szerokość kontenera */
+      margin: 0 auto;       /* wycentrowanie na stronie */
+      padding: 20px;        /* odstępy wewnętrzne */
+    }
+
     h2 {
       font-size: 24px;
       text-align: center;
       margin-bottom: 20px;
       color: #333;
     }
+
     form {
       background-color: white;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       padding: 10px;
-      margin: 0 auto;
-      width: 100%;  /* Szerokość 100% */
-      max-width: none; /* Brak ograniczenia szerokości */
+      width: 100%;          /* szerokość 100% w kontenerze */
       box-sizing: border-box;
+      /* usuwamy max-width: none; aby nie rozciągać się poza kontener */
     }
+
     label {
       display: block;
       font-weight: bold;
       margin-bottom: 8px;
       color: #333;
     }
+
     input, select {
       width: 100%;
       padding: 10px;
@@ -46,6 +67,7 @@
       border-color: #007bff;
       outline: none;
     }
+
     button {
       width: 100%;
       padding: 10px;
@@ -62,14 +84,16 @@
     button:hover {
       background-color: #093a40;
     }
+
     .results {
       background-color: #f9f9f9;
       border-radius: 8px;
       padding: 20px;
       margin-top: 20px;
-      width: 100%; /* Pełna szerokość wyników */
-      max-width: none;
+      width: 100%;
+      box-sizing: border-box;
     }
+
     .button-container {
       display: flex;
       justify-content: center;
@@ -107,68 +131,73 @@
   </style>
 </head>
 <body>
-  <h2>Kalkulator Ilości Ziemi</h2>
-  <form id="soilCalculatorForm">
-    <label for="landArea">Powierzchnia działki (m²):</label>
-    <input type="number" id="landArea" placeholder="Wpisz powierzchnię działki" required>
+  <div class="container">
+    <h2>Kalkulator Ilości Ziemi</h2>
+    <form id="soilCalculatorForm">
+      <label for="landArea">Powierzchnia działki (m²):</label>
+      <input type="number" id="landArea" placeholder="Wpisz powierzchnię działki" required>
 
-    <label for="soilDepth">Grubość warstwy ziemi (cm):</label>
-    <input type="number" id="soilDepth" placeholder="Wpisz grubość warstwy ziemi" required>
+      <label for="soilDepth">Grubość warstwy ziemi (cm):</label>
+      <input type="number" id="soilDepth" placeholder="Wpisz grubość warstwy ziemi" required>
 
-    <label for="loosening">Dodatkowa objętość ziemi (spulchnienie):</label>
-    <select id="loosening" onchange="toggleCustomLooseningField()">
-      <option value="15">+15% (domyślnie)</option>
-      <option value="10">+10%</option>
-      <option value="5">+5%</option>
-      <option value="custom">Własna wartość</option>
-    </select>
-    <div id="customLooseningField" style="display: none;">
-      <label for="customLoosening">Własna wartość spulchnienia (%):</label>
-      <input type="number" id="customLoosening" placeholder="Wpisz wartość spulchnienia">
-    </div>
+      <label for="loosening">Dodatkowa objętość ziemi (spulchnienie):</label>
+      <select id="loosening" onchange="toggleCustomLooseningField()">
+        <option value="15">+15% (domyślnie)</option>
+        <option value="10">+10%</option>
+        <option value="5">+5%</option>
+        <option value="custom">Własna wartość</option>
+      </select>
+      <div id="customLooseningField" style="display: none;">
+        <label for="customLoosening">Własna wartość spulchnienia (%):</label>
+        <input type="number" id="customLoosening" placeholder="Wpisz wartość spulchnienia">
+      </div>
 
-    <label for="excessPercentage">Dodatkowy zapas ziemi (%):</label>
-    <input type="number" id="excessPercentage" placeholder="Wpisz procent nadmiaru" value="0">
+      <label for="excessPercentage">Dodatkowy zapas ziemi (%):</label>
+      <input type="number" id="excessPercentage" placeholder="Wpisz procent nadmiaru" value="0">
 
-    <label for="soilDensity">Rodzaj ziemi i gęstość:</label>
-    <select id="soilDensity">
-      <option value="1.5">Ziemia ogrodowa żyzna (1,4-1,6 tony/m³) - domyślnie</option>
-      <option value="1.9">Ziemia ciężka, gliniasta (1,8-2,0 tony/m³)</option>
-      <option value="1.25">Ziemia lekka, piaskowa (1,2-1,3 tony/m³)</option>
-    </select>
+      <label for="soilDensity">Rodzaj ziemi i gęstość:</label>
+      <select id="soilDensity">
+        <option value="1.5">Ziemia ogrodowa żyzna (1,4-1,6 tony/m³) - domyślnie</option>
+        <option value="1.9">Ziemia ciężka, gliniasta (1,8-2,0 tony/m³)</option>
+        <option value="1.25">Ziemia lekka, piaskowa (1,2-1,3 tony/m³)</option>
+      </select>
 
-    <label for="priceOption">Koszt ziemi za tonę (zł):</label>
-    <select id="priceOption" onchange="toggleCustomPriceField()">
-      <option value="70">Nieprzesiana (70 zł/tona)</option>
-      <option value="90">Przesiana (90 zł/tona)</option>
-      <option value="custom">Własna cena</option>
-    </select>
-    <div id="customPriceField" style="display: none;">
-      <label for="customPrice">Własna cena za tonę (zł):</label>
-      <input type="number" id="customPrice" placeholder="Wpisz własną cenę za tonę">
-    </div>
+      <label for="priceOption">Koszt ziemi za tonę (zł):</label>
+      <select id="priceOption" onchange="toggleCustomPriceField()">
+        <option value="70">Nieprzesiana (70 zł/tona)</option>
+        <option value="90">Przesiana (90 zł/tona)</option>
+        <option value="custom">Własna cena</option>
+      </select>
+      <div id="customPriceField" style="display: none;">
+        <label for="customPrice">Własna cena za tonę (zł):</label>
+        <input type="number" id="customPrice" placeholder="Wpisz własną cenę za tonę">
+      </div>
 
-    <button type="button" onclick="calculateSoil()">Oblicz</button>
-  </form>
+      <button type="button" onclick="calculateSoil()">Oblicz</button>
+    </form>
 
-  <div id="soilResult" class="results" style="display: none;"></div>
+    <div id="soilResult" class="results" style="display: none;"></div>
+  </div>
 
   <script>
     function toggleCustomPriceField() {
       const priceOption = document.getElementById('priceOption').value;
-      document.getElementById('customPriceField').style.display = priceOption === "custom" ? "block" : "none";
+      document.getElementById('customPriceField').style.display = 
+        priceOption === "custom" ? "block" : "none";
     }
 
     function toggleCustomLooseningField() {
       const loosening = document.getElementById('loosening').value;
-      document.getElementById('customLooseningField').style.display = loosening === "custom" ? "block" : "none";
+      document.getElementById('customLooseningField').style.display = 
+        loosening === "custom" ? "block" : "none";
     }
 
     function calculateSoil() {
       console.log("calculateSoil uruchomiona");
       // Pobranie danych wejściowych
       const landArea = parseFloat(document.getElementById('landArea').value);
-      const soilDepth = parseFloat(document.getElementById('soilDepth').value) / 100; // przeliczanie cm -> m
+      const soilDepth = parseFloat(document.getElementById('soilDepth').value) / 100; // cm -> m
+
       if (isNaN(landArea) || isNaN(soilDepth)) {
         alert("Proszę wypełnić wszystkie pola dotyczące działki i grubości ziemi.");
         return;
@@ -221,13 +250,30 @@
       // Obliczenie kosztu ziemi
       const soilCost = soilWeight * soilPrice;
       
-      // Przygotowanie wyniku z pogrubionymi etykietami i odstępem 20px między wynikami
+      // Przygotowanie wyniku
       const resultHTML = 
-      `<p style="margin-bottom:20px;"><strong>Objętość ziemi:</strong> ${landArea} m² × ${soilDepth.toFixed(2)} m = ${initialVolume.toFixed(2)} m³</p>
-      <p style="margin-bottom:20px;"><strong>Objętość ziemi spulchnionej:</strong> ${initialVolume.toFixed(2)} m³ × (1 + ${looseningCoefficient.toFixed(2)}) = ${loosenedVolume.toFixed(2)} m³</p>
-      <p style="margin-bottom:20px;"><strong>Objętość ziemi z nadmiarem:</strong> ${loosenedVolume.toFixed(2)} m³ × (1 + ${excessCoefficient.toFixed(2)}) = ${finalVolume.toFixed(2)} m³</p>
-      <p style="margin-bottom:20px;"><strong>Waga ziemi:</strong> ${finalVolume.toFixed(2)} m³ × ${soilDensity} t/m³ = ${soilWeight.toFixed(2)} t <span>👈 tyle ziemi potrzebujesz</span></p>
-      <p style="margin-bottom:20px;"><strong>Koszt ziemi:</strong> ${soilWeight.toFixed(2)} t × ${soilPrice.toFixed(2)} zł/t = ${soilCost.toFixed(2)} zł <span>👈 tyle będzie kosztować ziemia</span></p>`;
+      `<p style="margin-bottom:20px;">
+        <strong>Objętość ziemi:</strong> ${landArea} m² × ${soilDepth.toFixed(2)} m 
+        = ${initialVolume.toFixed(2)} m³
+      </p>
+      <p style="margin-bottom:20px;">
+        <strong>Objętość ziemi spulchnionej:</strong> ${initialVolume.toFixed(2)} m³ 
+        × (1 + ${looseningCoefficient.toFixed(2)}) = ${loosenedVolume.toFixed(2)} m³
+      </p>
+      <p style="margin-bottom:20px;">
+        <strong>Objętość ziemi z nadmiarem:</strong> ${loosenedVolume.toFixed(2)} m³ 
+        × (1 + ${excessCoefficient.toFixed(2)}) = ${finalVolume.toFixed(2)} m³
+      </p>
+      <p style="margin-bottom:20px;">
+        <strong>Waga ziemi:</strong> ${finalVolume.toFixed(2)} m³ 
+        × ${soilDensity} t/m³ = ${soilWeight.toFixed(2)} t 
+        <span>👈 tyle ziemi potrzebujesz</span>
+      </p>
+      <p style="margin-bottom:20px;">
+        <strong>Koszt ziemi:</strong> ${soilWeight.toFixed(2)} t 
+        × ${soilPrice.toFixed(2)} zł/t = ${soilCost.toFixed(2)} zł 
+        <span>👈 tyle będzie kosztować ziemia</span>
+      </p>`;
       
       // Wyświetlenie wyniku
       document.getElementById('soilResult').innerHTML = resultHTML;
@@ -237,31 +283,35 @@
       if (!document.getElementById('ebookOffer')) {
         const ebookOfferHTML = 
           `<div class="button-container" id="ebookOffer">
-            <a href="https://wytwornia-zieleni.pl/rabaty-ogrodowe-gotowe-projekty" target="_blank" class="wycena-button-fiolet">
+            <a href="https://wytwornia-zieleni.pl/rabaty-ogrodowe-gotowe-projekty" 
+               target="_blank" class="wycena-button-fiolet">
               Planjesz ogród🌲?<br>Sprawdź gotowe projekty rabat ogrodowych!
             </a>
           </div>
-          <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełna wersję ebooka 🌿✨</p>`;
+          <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełną wersję ebooka 🌿✨</p>`;
         document.getElementById('soilResult').innerHTML += ebookOfferHTML;
       }
+
+      // Po zakończeniu obliczeń wyślij nową wysokość do strony rodzica (iframe)
+      setTimeout(sendHeightToParent, 300);
     }
+
+    // Funkcja wysyłająca wysokość do rodzica
+    function sendHeightToParent() {
+      const bodyHeight = document.body.scrollHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const height = Math.max(bodyHeight, docHeight);
+      window.parent.postMessage({ iframeHeight: height }, '*');
+    }
+
+    // Wywołanie funkcji po załadowaniu i przy zmianie rozmiaru
+    window.addEventListener('load', sendHeightToParent);
+    window.addEventListener('resize', sendHeightToParent);
+
+    // Wysyłanie wysokości także po kliknięciach
+    document.addEventListener('click', function() {
+      setTimeout(sendHeightToParent, 300);
+    });
   </script>
-
-  <!-- Dodany kod do dynamicznej zmiany wysokości iframe -->
-   <script>
-  function sendHeightToParent() {
-    const height = document.body.scrollHeight;
-    window.parent.postMessage({ iframeHeight: height }, '*');
-  }
-
-  window.addEventListener('load', sendHeightToParent);
-  window.addEventListener('resize', sendHeightToParent);
-
-  // Wyślij wysokość także po kliknięciach – np. po kliknięciu „Oblicz”
-  document.addEventListener('click', function() {
-    setTimeout(sendHeightToParent, 300); // opóźnienie pozwala na rozwinięcie sekcji
-  });
-</script>
-  
 </body>
 </html>
