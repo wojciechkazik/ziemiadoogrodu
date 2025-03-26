@@ -238,7 +238,7 @@
         const ebookOfferHTML = 
           `<div class="button-container" id="ebookOffer">
             <a href="https://wytwornia-zieleni.pl/rabaty-ogrodowe-gotowe-projekty" target="_blank" class="wycena-button-fiolet">
-              Planjesz ogród🌲?<br>Sprawdź gotowe projekty rabat ogrodowych!</strong>
+              Planjesz ogród🌲?<br>Sprawdź gotowe projekty rabat ogrodowych!
             </a>
           </div>
           <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełna wersję ebooka 🌿✨</p>`;
@@ -248,13 +248,20 @@
   </script>
 
   <!-- Dodany kod do dynamicznej zmiany wysokości iframe -->
-  <script>
-    function sendHeight() {
-      const height = document.body.scrollHeight;
-      window.parent.postMessage({ height: height }, "*");
-    }
-    window.addEventListener("load", sendHeight);
-    window.addEventListener("resize", sendHeight);
-  </script>
+   <script>
+  function sendHeightToParent() {
+    const height = document.body.scrollHeight;
+    window.parent.postMessage({ iframeHeight: height }, '*');
+  }
+
+  window.addEventListener('load', sendHeightToParent);
+  window.addEventListener('resize', sendHeightToParent);
+
+  // Wyślij wysokość także po kliknięciach – np. po kliknięciu „Oblicz”
+  document.addEventListener('click', function() {
+    setTimeout(sendHeightToParent, 300); // opóźnienie pozwala na rozwinięcie sekcji
+  });
+</script>
+  
 </body>
 </html>
