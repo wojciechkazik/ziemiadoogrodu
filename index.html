@@ -253,31 +253,42 @@
       // Przygotowanie wyniku
       const resultHTML = 
       `<p style="margin-bottom:20px;">
-        <strong>Objętość ziemi:</strong> ${landArea} m² × ${soilDepth.toFixed(2)} m 
-        = ${initialVolume.toFixed(2)} m³
+        <strong>Objętość ziemi:</strong> ${landArea} m² × ${soilDepth.toFixed(2)} m = ${initialVolume.toFixed(2)} m³
       </p>
       <p style="margin-bottom:20px;">
-        <strong>Objętość ziemi spulchnionej:</strong> ${initialVolume.toFixed(2)} m³ 
-        × (1 + ${looseningCoefficient.toFixed(2)}) = ${loosenedVolume.toFixed(2)} m³
+        <strong>Objętość ziemi spulchnionej:</strong> ${initialVolume.toFixed(2)} m³ × (1 + ${looseningCoefficient.toFixed(2)}) = ${loosenedVolume.toFixed(2)} m³
       </p>
       <p style="margin-bottom:20px;">
-        <strong>Objętość ziemi z nadmiarem:</strong> ${loosenedVolume.toFixed(2)} m³ 
-        × (1 + ${excessCoefficient.toFixed(2)}) = ${finalVolume.toFixed(2)} m³
+        <strong>Objętość ziemi z nadmiarem:</strong> ${loosenedVolume.toFixed(2)} m³ × (1 + ${excessCoefficient.toFixed(2)}) = ${finalVolume.toFixed(2)} m³
       </p>
       <p style="margin-bottom:20px;">
-        <strong>Waga ziemi:</strong> ${finalVolume.toFixed(2)} m³ 
-        × ${soilDensity} t/m³ = ${soilWeight.toFixed(2)} t 
+        <strong>Waga ziemi:</strong> ${finalVolume.toFixed(2)} m³ × ${soilDensity} t/m³ = ${soilWeight.toFixed(2)} t 
         <span>👈 tyle ziemi potrzebujesz</span>
       </p>
       <p style="margin-bottom:20px;">
-        <strong>Koszt ziemi:</strong> ${soilWeight.toFixed(2)} t 
-        × ${soilPrice.toFixed(2)} zł/t = ${soilCost.toFixed(2)} zł 
+        <strong>Koszt ziemi:</strong> ${soilWeight.toFixed(2)} t × ${soilPrice.toFixed(2)} zł/t = ${soilCost.toFixed(2)} zł 
         <span>👈 tyle będzie kosztować ziemia</span>
       </p>`;
       
       // Wyświetlenie wyniku
       document.getElementById('soilResult').innerHTML = resultHTML;
       document.getElementById('soilResult').style.display = 'block';
+      
+      // Dodanie sekcji z propozycjami innych wpisów (pod wynikami, nad przyciskiem e-booka)
+      if (!document.getElementById('relatedPosts')) {
+        const relatedPostsHTML = `
+          <div id="relatedPosts" class="related-posts" style="margin-top: 20px; padding: 15px; background-color: #f1f1f1; border-radius: 10px;">
+            <p style="font-weight: bold; margin-bottom: 10px;">💡 Sprawdź też:</p>
+            <ul style="list-style-type: disc; padding-left: 20px; margin: 0;">
+              <li><a href="https://wytwornia-zieleni.pl/blog/jak-zaprojektowac-ogrod-przydomowy" target="_blank">Jak zaprojektować ogród</a></li>
+              <li><a href="https://wytwornia-zieleni.pl/blog/zakladanie-ogrodu-krok-po-kroku" target="_blank">Zakładanie ogrodu krok po kroku</a></li>
+              <li><a href="https://wytwornia-zieleni.pl/blog/prace-ziemne-przygotowanie-dzialki-pod-ogrod" target="_blank">Prace ziemne pod ogród</a></li>
+              <li><a href="https://wytwornia-zieleni.pl/blog/ile-kosztuje-zalozenie-ogrodu" target="_blank">Koszt założenia ogrodu</a></li>
+            </ul>
+          </div>
+        `;
+        document.getElementById('soilResult').innerHTML += relatedPostsHTML;
+      }
       
       // Dodanie guzika z eBookiem (jeśli jeszcze nie został dodany)
       if (!document.getElementById('ebookOffer')) {
@@ -291,7 +302,7 @@
           <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełną wersję ebooka 🌿✨</p>`;
         document.getElementById('soilResult').innerHTML += ebookOfferHTML;
       }
-
+      
       // Po zakończeniu obliczeń wyślij nową wysokość do strony rodzica (iframe)
       setTimeout(sendHeightToParent, 300);
     }
