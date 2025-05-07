@@ -94,39 +94,12 @@
       box-sizing: border-box;
     }
 
-    .button-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    /* Banner */
+    .banner-container img {
       width: 100%;
-      margin: 20px 0;
-    }
-    .wycena-button-fiolet {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 50%;
-      max-width: 500px;
-      min-width: 250px;
-      font-size: clamp(16px, 1.8vw, 24px);
-      background: #8e42ff;
-      color: white !important;
-      text-align: center;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 15px;
-      padding: 20px 25px;
-      line-height: 1.4;
-      transition: all 300ms ease-in-out;
-      box-shadow: 0 4px 10px rgba(142, 66, 255, 0.4);
-      white-space: normal;
-      word-wrap: break-word;
-    }
-    .wycena-button-fiolet:hover {
-      transform: scale(1.07);
-      background: #7a36db;
-      transition: all 200ms ease-in-out;
+      height: auto;
+      display: block;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -182,13 +155,13 @@
   <script>
     function toggleCustomPriceField() {
       const priceOption = document.getElementById('priceOption').value;
-      document.getElementById('customPriceField').style.display = 
+      document.getElementById('customPriceField').style.display =
         priceOption === "custom" ? "block" : "none";
     }
 
     function toggleCustomLooseningField() {
       const loosening = document.getElementById('loosening').value;
-      document.getElementById('customLooseningField').style.display = 
+      document.getElementById('customLooseningField').style.display =
         loosening === "custom" ? "block" : "none";
     }
 
@@ -274,33 +247,20 @@
       document.getElementById('soilResult').innerHTML = resultHTML;
       document.getElementById('soilResult').style.display = 'block';
       
-      // Dodanie sekcji z propozycjami innych wpisów (pod wynikami, nad przyciskiem e-booka)
-      if (!document.getElementById('relatedPosts')) {
-        const relatedPostsHTML = `
-          <div id="relatedPosts" class="related-posts" style="margin-top: 20px; padding: 15px; background-color: #f1f1f1; border-radius: 10px;">
-            <p style="font-weight: bold; margin-bottom: 10px;">💡 Sprawdź też:</p>
-            <ul style="list-style-type: disc; padding-left: 20px; margin: 0;">
-              <li><a href="https://wytwornia-zieleni.pl/blog/jak-zaprojektowac-ogrod-przydomowy" target="_blank">Jak zaplanować ogród?</a></li>
-              <li><a href="https://wytwornia-zieleni.pl/blog/zakladanie-ogrodu-krok-po-kroku" target="_blank">Jak wykonać ogród krok po kroku?</a></li>
-              <li><a href="https://wytwornia-zieleni.pl/blog/prace-ziemne-przygotowanie-dzialki-pod-ogrod" target="_blank">Jak wykonać prace ziemne w ogrodzie?</a></li>
-              <li><a href="https://wytwornia-zieleni.pl/blog/zakladanie-ogrodu-5-kosztownych-bledow" target="_blank">5 kosztownych błędów, jak ich uniknąć?</a></li>
-            </ul>
-          </div>
-        `;
-        document.getElementById('soilResult').innerHTML += relatedPostsHTML;
-      }
-      
-      // Dodanie guzika z eBookiem (jeśli jeszcze nie został dodany)
-      if (!document.getElementById('ebookOffer')) {
-        const ebookOfferHTML = 
-          `<div class="button-container" id="ebookOffer">
-            <a href="https://wytwornia-zieleni.pl/rabaty-ogrodowe-gotowe-projekty" 
-               target="_blank" class="wycena-button-fiolet">
-              Planjesz ogród🌲?<br>Sprawdź gotowe projekty rabat ogrodowych!
-            </a>
-          </div>
-          <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełną wersję ebooka 🌿✨</p>`;
-        document.getElementById('soilResult').innerHTML += ebookOfferHTML;
+      // Dodajemy banner pod wynikiem (tylko raz)
+      if (!document.getElementById('bannerOffer')) {
+        const bannerHTML =
+          `<div id="bannerOffer" class="banner-container" style="margin:20px 0;">
+             <a href="https://sendfox.com/lp/m7lkex" target="_blank" rel="noopener">
+               <img
+                 src="https://global.divhunt.com/db3905ea1909596bf0b81e7cab284809_63242.webp"
+                 alt="Promocja"
+               />
+             </a>
+           </div>`;
+        document
+          .getElementById('soilResult')
+          .insertAdjacentHTML('afterend', bannerHTML);
       }
       
       // Po zakończeniu obliczeń wyślij nową wysokość do strony rodzica (iframe)
@@ -326,3 +286,4 @@
   </script>
 </body>
 </html>
+
